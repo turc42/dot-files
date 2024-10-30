@@ -1,0 +1,16 @@
+[user]
+	name = Turczyn, Bill (bturczyn)
+	email = bturczyn@treyarch.com
+[push]
+	default = matching
+[url "ssh://git@git.infra.activision.com:qa-automation/"]
+    insteadOf = https://git.infra.activision.com/
+[pretty]
+        # style: bold, dim, revers, ul, blink
+        # color: normal, black, red, green, yellow, blue, magenta, cyan, white
+        pretty-history = format:%C(bold yellow)%d %Creset%Cgreen%cr%Creset %s %C(cyan)<%an>%Creset %C(dim)%h
+[alias]
+        lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+        p4 = !python2 '/home/bturczyn/bin/git-p4.py'
+[credential]
+	helper = cache --timeout=10000

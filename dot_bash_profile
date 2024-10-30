@@ -1,0 +1,94 @@
+# /etc/skel/.bashrc
+#
+# This file is sourced by all *interactive* bash shells on startup,
+# including some apparently interactive shells such as scp and rcp
+# that can't tolerate any output.  So make sure this doesn't display
+# anything or bad things will happen !
+# test line
+
+
+export GOROOT=/usr/local/go
+export PATH=$GOROOT/bin:$PATH
+export PATH="$PATH:/opt/nvim-linux64/bin"
+export PATH=/usr/local/go/bin:$PATH:$HOME/go_install/go/bin:~/bin:~/.go/bin:~/.local/bin/black:/sbin
+
+
+export GOPATH=~/.go
+export PIP_CONFIG_FILE=~/.pip/pip.config
+export PGPASSFILE=~/.pgpass
+export LANG=en_US.UTF-8
+export GOPRIVATE=gitlab.research.att.com/pkg/*
+export KUBECONFIG=~/.k3s
+export OPENFAAS_PREFIX=registry.apollo.local:5000
+export OPENFAAS_URL=http://openfaas.apollo.local:8080
+export P4CLIENT=bturczyn_TA-BTURCZYN_shared_main_apollo
+export GOPRIVATE=git.infra.activision.com/*
+export EDITOR=/opt/nvim-linux64/bin/nvim
+export TERM=xterm-256color
+export KUBE_EDITOR=/opt/nvim-linux64/bin/nvim
+
+
+#bash bookmarks
+source ~/.bashDirB
+
+# Test for an interactive shell.  There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+#if [[ $- != *i* ]] ; then
+#	# Shell is non-interactive.  Be done now!
+#	return
+#fi
+export LESS=-R
+export TZ=US/Eastern
+#vim for man pages
+#export MANPAGER='col -bx | vim -c ":set ft=man nonu nolist" -R -'
+
+export TERM=xterm-color
+
+PS1="\[\e[33;1m\][\t]\[\033[01;32m\]\u@\h\[\033[01;34m\] \W \$\[\033[00m\]"
+HISTORY_FILE="${HOME}/.bash_super_history"
+if [[ ! -f $HISTORY_FILE ]] ; then
+	echo "${HISTORY_FILE} does not exist"
+	touch $HISTORY_FILE
+fi
+_bash_history_sinc() {
+    # Function that appends last command to the ${HISTORY_FILE}
+    DT=$(date '+%Y%m%d %H:%M:%S')
+    CLEAN_HISTORY=$(HISTTIMEFORMAT='' history 1 | sed 's/^[ ]*[0-9]*[ ]*//')
+    COMMAND_PID=$$
+    printf "%s\t%s\t%s\t%s\t%s\n" "${DT}" "${HOSTNAME}" "${COMMAND_PID}" "${USER}" "${CLEAN_HISTORY}" >> ${HISTORY_FILE}
+}
+PROMPT_COMMAND=_bash_history_sinc
+
+#alias commands
+alias git-log="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias hog="du -hs * |egrep '(^[[:digit:]]{1,}.?[[:digit:]]?G)|(^[[:digit:]]{3,}M)'"
+alias littlehog="du -hs * |egrep '(^[[:digit:]]{1,}.?[[:digit:]]?G)|(^[56789][0123456789]{1,}M)'"
+alias bighog="du -hs * |egrep '(^[[:digit:]]{1,}.?[[:digit:]]?G))'"
+alias vi="vim"
+alias utc="date -u +\"%Y-%m-%d %H:%M:%S\";date  +\"%Y-%m-%d %H:%M:%S\""
+alias k="kubectl"
+
+function fcmd
+{
+    grep -i $1 ${HISTORY_FILE}
+}
+
+function pp {
+        xargs -L1 -d'\n' -P$1 -I% bash -c '%'
+}
+
+function ppmac {
+        tr '\n' '\0' | xargs -0 -I{} -P$1 bash -c '{}'
+}
+
+function ufcmd 
+{ 
+
+    grep -i $1 ${HISTORY_FILE}|cut -d "," -f4 |awk '{$1=$2=$3="";print}'|sort|uniq
+}
+
+if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then
+    GIT_PROMPT_ONLY_IN_REPO=1
+    source $HOME/.bash-git-prompt/gitprompt.sh
+fi

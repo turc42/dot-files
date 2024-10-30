@@ -1,0 +1,24 @@
+Host ta1
+    Hostname  ta-automation1.activision.com
+    User bturczyn
+Host ta2
+    Hostname  ta-automation2.activision.com
+    User bturczyn
+Host ta3
+    Hostname  ta-automation3.activision.com
+    User bturczyn
+Host ta4
+    Hostname  ta-automation4.activision.com
+    User bturczyn
+Host ta5
+    Hostname  ta-automation5.activision.com
+    User bturczyn
+Host ta6
+    Hostname  ta-automation6.activision.com
+    User bturczyn
+Host ta7
+    Hostname  ta-automation7.activision.com
+    User bturczyn
+Host ta8
+    Hostname  ta-automation8.activision.com
+    User bturczyn
